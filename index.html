@@ -7,19 +7,10 @@
 
 <style>
 
-/* =========================================================
-   GRUNDLAYOUT
-   ========================================================= */
-
-html {
+html,
+body {
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-* {
-    box-sizing: border-box;
 }
 
 body {
@@ -32,25 +23,28 @@ body {
     justify-content: center;
     align-items: center;
 
-    min-height: 100vh;
-
     overflow: hidden;
-
-    font-family: Arial, sans-serif;
-
-    touch-action: none;
-
-    user-select: none;
 }
 
+a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-/* =========================================================
-   MUSEUM ICON
-   ========================================================= */
+    text-decoration: none;
 
-a img {
-    display: block;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
 
+a:hover img {
+    transform: scale(1.2);
+
+    filter:
+        brightness(1.5)
+        drop-shadow(0 0 10px orange);
+}
+
+img {
     width: clamp(4rem, 15vw, 8rem);
     height: auto;
 
@@ -58,20 +52,6 @@ a img {
 
     user-select: none;
     -webkit-user-drag: none;
-
-    touch-action: manipulation;
-
-    transition:
-        transform 0.3s cubic-bezier(.2,.8,.2,1),
-        filter 0.3s ease;
-}
-
-a img:hover {
-    transform: scale(1.2);
-
-    filter:
-        brightness(1.5)
-        drop-shadow(0 0 10px orange);
 }
 
 
@@ -455,46 +435,20 @@ a img:hover {
     }
 }
 
-
-/* =========================================================
-   REDUZIERTE ANIMATION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .glitzer,
-    .staub {
-        animation-duration: .35s;
-    }
-
-    a img {
-        transition: none;
-    }
-}
-
 </style>
 </head>
 
 <body>
 
-<a
-    href="https://www.sunnysschaetze.de/home/sunnys-museum"
-    target="_blank"
-    rel="noopener noreferrer"
->
+<a href="https://www.sunnysschaetze.de/home/sunnys-museum" target="_blank">
     <img
         src="https://cdn-icons-png.flaticon.com/512/5754/5754055.png"
         alt="Museum Icon"
-        draggable="false"
     >
 </a>
 
 
 <script>
-
-/* =========================================================
-   EINSTELLUNGEN
-   ========================================================= */
 
 let letzteX = 0;
 let letzteY = 0;
@@ -504,26 +458,6 @@ let letzterSpawn = 0;
 let aktiveGlitzer = 0;
 
 const MAX_GLITZER = 180;
-
-
-/* =========================================================
-   MUSEUM KLICK
-   ========================================================= */
-
-const museumLink =
-    document.querySelector("a");
-
-museumLink.addEventListener(
-    "click",
-    function(event) {
-
-        klickEffekt(
-            event.clientX,
-            event.clientY
-        );
-
-    }
-);
 
 
 /* =========================================================
@@ -569,6 +503,23 @@ document.addEventListener(
     },
     {
         passive: true
+    }
+);
+
+
+/* =========================================================
+   KLICK
+   ========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        klickEffekt(
+            event.clientX,
+            event.clientY
+        );
+
     }
 );
 
@@ -627,8 +578,6 @@ function erzeugeBewegungsEffekt(
     }
 
 
-    /* Bewegungsrichtung */
-
     let nx = 0;
     let ny = 0;
 
@@ -643,17 +592,9 @@ function erzeugeBewegungsEffekt(
     }
 
 
-    /*
-       Der Effekt startet exakt am Cursor.
-       Danach wandert er ausschließlich
-       entgegen der Bewegungsrichtung.
-    */
-
     const trailX = x;
     const trailY = y;
 
-
-    /* Hauptstern */
 
     createGlitzer(
         trailX,
@@ -663,8 +604,6 @@ function erzeugeBewegungsEffekt(
         ny
     );
 
-
-    /* Staub */
 
     createStaub(
         trailX,
@@ -697,8 +636,6 @@ function erzeugeBewegungsEffekt(
     );
 
 
-    /* Größerer Stern */
-
     if (
         Math.random() > .68
     ) {
@@ -712,8 +649,6 @@ function erzeugeBewegungsEffekt(
         );
     }
 
-
-    /* Schnelle Bewegung */
 
     if (
         entfernung > 15
@@ -790,8 +725,6 @@ function createGlitzer(
         : "glitzer";
 
 
-    /* Farbe */
-
     if (
         Math.random() < .5
     ) {
@@ -810,8 +743,6 @@ function createGlitzer(
     }
 
 
-    /* Größe */
-
     const size =
         grosser
         ? 10 + Math.random() * 5
@@ -822,8 +753,6 @@ function createGlitzer(
         size + "px"
     );
 
-
-    /* Seitliche Bewegung */
 
     const seitlich =
         (Math.random() - .5) * 5;
@@ -841,8 +770,6 @@ function createGlitzer(
         py * seitlich;
 
 
-    /* Mittlere Position */
-
     const mx =
         sx -
         nx * (
@@ -857,8 +784,6 @@ function createGlitzer(
             Math.random() * 16
         );
 
-
-    /* Ende – langer Schweif hinter dem Cursor */
 
     const ex =
         mx -
@@ -907,8 +832,6 @@ function createGlitzer(
         ey + "px"
     );
 
-
-    /* Lebensdauer */
 
     const duration =
         900 +
@@ -971,8 +894,6 @@ function createStaub(
         "staub";
 
 
-    /* Farbe */
-
     if (
         Math.random() < .5
     ) {
@@ -991,8 +912,6 @@ function createStaub(
     }
 
 
-    /* Größe */
-
     const size =
         1.5 +
         Math.random() * 2.5;
@@ -1003,16 +922,12 @@ function createStaub(
     );
 
 
-    /* Startposition */
-
     const startX =
         (Math.random() - .5) * 20;
 
     const startY =
         (Math.random() - .5) * 20;
 
-
-    /* Bewegung */
 
     const dx =
         (Math.random() - .5) * 48;
@@ -1038,8 +953,6 @@ function createStaub(
         dy + "px"
     );
 
-
-    /* Lebensdauer */
 
     const duration =
         650 +
@@ -1074,15 +987,12 @@ function createStaub(
 
 /* =========================================================
    KLICK-EFFEKT
-   EXPLOSIONSARTIG
    ========================================================= */
 
 function klickEffekt(
     x,
     y
 ) {
-
-    /* Zentraler Blitz */
 
     const flash =
         document.createElement("div");
@@ -1101,8 +1011,6 @@ function klickEffekt(
     );
 
 
-    /* 18 Explosionssterne */
-
     for (
         let i = 0;
         i < 18;
@@ -1116,8 +1024,6 @@ function klickEffekt(
         );
     }
 
-
-    /* 18 Staubpartikel */
 
     for (
         let i = 0;
@@ -1169,8 +1075,6 @@ function createExplosionsGlitzer(
         : "glitzer";
 
 
-    /* Farbe */
-
     if (
         Math.random() < .5
     ) {
@@ -1189,8 +1093,6 @@ function createExplosionsGlitzer(
     }
 
 
-    /* Größe */
-
     const size =
         grosser
         ? 13 + Math.random() * 8
@@ -1202,15 +1104,11 @@ function createExplosionsGlitzer(
     );
 
 
-    /* Zufälliger Winkel */
-
     const winkel =
         Math.random() *
         Math.PI *
         2;
 
-
-    /* Entfernung */
 
     const entfernung =
         grosser
@@ -1218,16 +1116,12 @@ function createExplosionsGlitzer(
         : 35 + Math.random() * 70;
 
 
-    /* Start */
-
     const sx =
         (Math.random() - .5) * 6;
 
     const sy =
         (Math.random() - .5) * 6;
 
-
-    /* Mitte */
 
     const mx =
         Math.cos(winkel) *
@@ -1239,8 +1133,6 @@ function createExplosionsGlitzer(
         entfernung *
         .45;
 
-
-    /* Ende */
 
     const ex =
         Math.cos(winkel) *
@@ -1281,8 +1173,6 @@ function createExplosionsGlitzer(
         ey + "px"
     );
 
-
-    /* Explosionsgeschwindigkeit */
 
     const duration =
         500 +
@@ -1345,8 +1235,6 @@ function createExplosionStaub(
         "staub";
 
 
-    /* Farbe */
-
     if (
         Math.random() < .5
     ) {
@@ -1365,8 +1253,6 @@ function createExplosionStaub(
     }
 
 
-    /* Größe */
-
     const size =
         3 +
         Math.random() * 4;
@@ -1376,8 +1262,6 @@ function createExplosionStaub(
         size + "px"
     );
 
-
-    /* Zufällige Richtung */
 
     const winkel =
         Math.random() *
@@ -1415,8 +1299,6 @@ function createExplosionStaub(
         dy + "px"
     );
 
-
-    /* Lebensdauer */
 
     const duration =
         450 +
